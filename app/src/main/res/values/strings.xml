@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Exchange Rates</string>
+    <string name="title_activity_currency">CurrencyActivity</string>
+    <string name="service_error_msg">Unable to get exchange rates</string>
+</resources>
