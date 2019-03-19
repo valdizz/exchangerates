@@ -2,7 +2,6 @@ package com.valdizz.exchangerates.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -56,12 +55,14 @@ public class ExchangeRatesActivity extends AppCompatActivity {
         exchangeRatesViewModel.getCurrencyRates().observe(this, exchangeRates -> ratesRecyclerViewAdapter.setCurrencyRates(exchangeRates));
         exchangeRatesViewModel.getRefreshing().observe(this, isRefreshing -> swipeContainer.setRefreshing(isRefreshing));
         exchangeRatesViewModel.getServiceError().observe(this, isServiceError -> {
+            MenuItem menuItem = toolbar.getMenu().findItem(R.id.action_settings);
             if (isServiceError) {
                 Snackbar.make(ratesList, R.string.service_error_msg, Snackbar.LENGTH_LONG).show();
-                toolbar.getMenu().findItem(R.id.action_settings).setEnabled(false);
+                if (menuItem != null) {
+                    toolbar.getMenu().findItem(R.id.action_settings).setEnabled(false);
+                }
             }
             else {
-                MenuItem menuItem = toolbar.getMenu().findItem(R.id.action_settings);
                 if (menuItem != null) {
                     menuItem.setEnabled(true);
                 }

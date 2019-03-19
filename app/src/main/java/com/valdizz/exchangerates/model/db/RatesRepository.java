@@ -8,10 +8,6 @@ import com.valdizz.exchangerates.model.db.entity.ExchangeRate;
 import com.valdizz.exchangerates.model.db.entity.Rate;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import androidx.lifecycle.LiveData;
 
@@ -30,15 +26,8 @@ public class RatesRepository {
         return currencies;
     }
 
-    public List<ExchangeRate> getCurrencyRates(String date1, String date2) throws ExecutionException, InterruptedException {
-        Callable<List<ExchangeRate>> callable = new Callable<List<ExchangeRate>>() {
-            @Override
-            public List<ExchangeRate> call() throws Exception {
-                return nbrbRatesDAO.getCurrencyRates(date1, date2);
-            }
-        };
-        Future<List<ExchangeRate>> listFuture = Executors.newSingleThreadExecutor().submit(callable);
-        return listFuture.get();
+    public LiveData<List<ExchangeRate>> getCurrencyRates(String date1, String date2) {
+        return nbrbRatesDAO.getCurrencyRates(date1, date2);
     }
 
     public void insertCurrency(Currency currency) {

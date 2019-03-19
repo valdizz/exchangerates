@@ -11,6 +11,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 @Dao
@@ -25,6 +26,7 @@ public interface NBRBRatesDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertRate(Rate rate);
 
+    @Transaction
     @Query("select * from Currency order by orderNum")
     LiveData<List<Currency>> getCurrencies();
 
@@ -33,6 +35,6 @@ public interface NBRBRatesDAO {
             "where (Currency.numCode = Rate1.numCode and Currency.visible = 1 and Rate1.date = :date1) " +
             "and (Currency.numCode = Rate2.numCode and Currency.visible = 1 and Rate2.date = :date2)" +
             "order by Currency.orderNum")
-    List<ExchangeRate> getCurrencyRates(String date1, String date2);
+    LiveData<List<ExchangeRate>> getCurrencyRates(String date1, String date2);
 
 }
